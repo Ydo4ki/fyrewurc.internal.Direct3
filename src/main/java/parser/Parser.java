@@ -78,7 +78,7 @@ public class Parser {
         }
 
         LocatedExprList list = (LocatedExprList) current;
-        list = ((LocatedExprList)list.split(",").iterator().next());
+        list = ((LocatedExprList) list.split(",").iterator().next());
         if (list.getBracketsType() != BracketsTypes.round)
             throw new EsastException(current.getLocation(), "Unrecognized brackets type: " + list.getBracketsType());
 
@@ -164,7 +164,11 @@ public class Parser {
 
         @Override
         public Val compile(Map<String, Val> declarations) {
-            Val val = declarations.get(symbol.getValue());
+            String name = symbol.getValue();
+            if (name.charAt(0) == '\'' && name.charAt(name.length() - 1) == '\'')
+                return Val.symbol(name.substring(1, name.length() - 1));
+
+            Val val = declarations.get(name);
             if (val == null)
                 throw new EsastException(symbol.getLocation(), "Cannot find symbol: " + symbol.getValue());
             return val;
