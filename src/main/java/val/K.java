@@ -14,6 +14,16 @@ final class K implements Value {
     }
 
     @Override
+    public boolean isInNormalForm() {
+        return true;
+    }
+
+    @Override
+    public Value reduce() {
+        return this;
+    }
+
+    @Override
     public String toString() {
         return "const";
     }
@@ -28,6 +38,16 @@ final class K implements Value {
         @Override
         public Value call(Value value) {
             return x;
+        }
+
+        @Override
+        public boolean isInNormalForm() {
+            return true;
+        }
+
+        @Override
+        public Value reduce() {
+            return this;
         }
 
         @Override

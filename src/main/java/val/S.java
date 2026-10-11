@@ -14,6 +14,16 @@ final class S implements Value {
     }
 
     @Override
+    public boolean isInNormalForm() {
+        return true;
+    }
+
+    @Override
+    public Value reduce() {
+        return this;
+    }
+
+    @Override
     public String toString() {
         return "substitutor";
     }
@@ -28,6 +38,16 @@ final class S implements Value {
         @Override
         public Value call(Value y) {
             return new Sxy(x, y);
+        }
+
+        @Override
+        public boolean isInNormalForm() {
+            return true;
+        }
+
+        @Override
+        public Value reduce() {
+            return this;
         }
 
         @Override
@@ -59,7 +79,17 @@ final class S implements Value {
 
         @Override
         public Value call(Value z) {
-            return x.call(z).call(new ValueApplication(y, z));
+            return x.call(z).call(new LazyValueApplication(y, z));
+        }
+
+        @Override
+        public boolean isInNormalForm() {
+            return true;
+        }
+
+        @Override
+        public Value reduce() {
+            return this;
         }
 
         @Override

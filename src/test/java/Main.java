@@ -15,7 +15,7 @@ public class Main {
         System.out.println(substitutor.call(konst).call(symbol("HelloWorld")).call(symbol("a")));
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main1(String[] args) throws IOException {
         File file = new File("declarations.txt");
         Parser parser = new Parser(file);
         Map<String, Val> initialDeclarations = new HashMap<>();
@@ -28,5 +28,10 @@ public class Main {
             e.printStackTrace();
         }
         System.out.println(initialDeclarations);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(eq.call(konst).call(konst));
+        System.out.println(eq.call(konst).call(substitutor));
     }
 }

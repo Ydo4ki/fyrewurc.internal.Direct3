@@ -78,7 +78,7 @@ public class Parser {
         }
 
         LocatedExprList list = (LocatedExprList) current;
-        list = ((LocatedExprList) list.split(",").iterator().next());
+        list = ((LocatedExprList) list.split(",", ".").iterator().next());
         if (list.getBracketsType() != BracketsTypes.round)
             throw new EsastException(current.getLocation(), "Unrecognized brackets type: " + list.getBracketsType());
 

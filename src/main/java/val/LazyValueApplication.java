@@ -2,10 +2,11 @@ package val;
 
 import java.util.Objects;
 
-public final class ValueApplication implements Value {
+final class LazyValueApplication implements Value {
     private final Value a, b;
+    private Value reduced;
 
-    public ValueApplication(Value a, Value b) {
+    LazyValueApplication(Value a, Value b) {
         this.a = a;
         this.b = b;
     }
@@ -14,26 +15,40 @@ public final class ValueApplication implements Value {
      * Perform beta-reduction.
      * @return reduced value
      */
+    @Override
     public Value reduce() {
+        if (this.reduced != null)
+            return this.reduced;
+
         Value a = this.a,
               b = this.b;
 
-        if (a instanceof ValueApplication)
-            a = ((ValueApplication) a).reduce();
+        if (!a.isInNormalForm())
+            a = a.reduce();
 
-        return a.call(b);
+        return this.reduced = a.call(b);
+    }
+
+    @Override
+    public boolean isInNormalForm() {
+        return this.reduce().equals(this);
     }
 
     @Override
     public Value call(Value c) {
-        return new ValueApplication(this, c);
+        return new LazyValueApplication(this, c);
+    }
+
+    @Override
+    public String toString() {
+        return a + "(" + b + ")";
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
 
-        ValueApplication that = (ValueApplication) o;
+        LazyValueApplication that = (LazyValueApplication) o;
         return Objects.equals(a, that.a) && Objects.equals(b, that.b);
     }
 

@@ -2,7 +2,7 @@ package val;
 
 import java.util.Objects;
 
-public class Sym implements Value {
+final class Sym implements Value {
     private final String identifier;
 
     Sym(String identifier) {
@@ -10,14 +10,23 @@ public class Sym implements Value {
     }
 
     @Override
-    public String toString() {
-        return "'" + identifier + "'";
+    public Value call(Value value) {
+        return new LazyValueApplication(this, value); // irreducible
     }
 
     @Override
-    public Value call(Value value) {
-        System.out.println("Useless action was just performed");
-        return new ValueApplication(this, value); // irreducible
+    public boolean isInNormalForm() {
+        return true;
+    }
+
+    @Override
+    public Value reduce() {
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "'" + identifier + "'";
     }
 
     @Override

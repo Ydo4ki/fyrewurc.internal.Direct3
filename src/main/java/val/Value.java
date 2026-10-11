@@ -1,6 +1,14 @@
 package val;
 
-public interface Value {
+interface Value {
     Value call(Value value);
+
+    boolean isInNormalForm();
+
+    /**
+     * Perform beta-reduction.
+     * @return reduced value
+     */
+    Value reduce();
 }
 
