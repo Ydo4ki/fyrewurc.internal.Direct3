@@ -10,7 +10,6 @@ public final class Val {
 
     private Val(Value value) {
         this.value = value;
-        ;
     }
 
     public Val call(Val val) {
@@ -44,6 +43,7 @@ public final class Val {
 
     public static final Val substitutor = m_wrap(val.S.s);
     public static final Val konst = m_wrap(val.K.k);
+    public static final Val mirror = substitutor.call(konst).call(konst).m_fullyReduce();
     public static final Val eq = m_wrap(Equals.eq);
     public static Val symbol(String identifier)
         { return m_wrap(new Sym(identifier)); }
@@ -57,7 +57,6 @@ public final class Val {
         if (value instanceof S.Sxy) {
             S.Sxy s = (S.Sxy) value;
             if (s.x == val.K.k && s.y == val.K.k) {
-//                System.out.println("Im fast yoy");
                 return (me, arg) -> arg;
             }
         }

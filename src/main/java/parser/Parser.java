@@ -6,6 +6,7 @@ import val.Val;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Function;
 
 public class Parser {
     private final File file;
@@ -44,7 +45,7 @@ public class Parser {
             next();
             Expression expression = parseExpression(false);
 //            System.out.println("$ " + expression + " : " + current.getExpr());
-            Val value = expression.compile(declarations);
+            Val value = expression.compile(declarations::get);
             declarations.put(name, value);
         }
 
@@ -54,10 +55,23 @@ public class Parser {
     private Expression parseExpression(boolean requireComma) {
         LocatedExpr<? extends Expr> e = current;
 
-        while (e instanceof LocatedExprList
-                && ((LocatedExprList) e).size() == 1
-                && ((LocatedExprList) e).getBracketsType() == BracketsTypes.round)
-            e = ((LocatedExprList) e).get(0);
+//        while (e instanceof LocatedExprList
+//                && ((LocatedExprList) e).size() == 1
+//                && ((LocatedExprList) e).getBracketsType() == BracketsTypes.round)
+//            e = ((LocatedExprList) e).get(0);
+
+        if (e instanceof LocatedExprList) {
+            e = (LocatedExpr<? extends Expr>) (Object) e.split(",", ".").iterator().next();
+            LocatedExprList list = (LocatedExprList) e;
+            if (list.getBracketsType() != BracketsTypes.round)
+                throw new EsastException(current.getLocation(), "Unrecognized brackets type: " + list.getBracketsType());
+
+            Iterator<LocatedExpr<? extends Expr>> iter = list.iterator();
+            Parser p = new Parser(null, iter, iter.next());
+            Expression r = p.parseExpression(false);
+            next();
+            return r;
+        }
 
         if (!(e instanceof LocatedSymbol))
             throw new EsastException(current.getLocation(), "Name expected: " + e);
@@ -74,7 +88,14 @@ public class Parser {
                     throw new EsastException(expr.getLocation(), "Comma expected: " + expr.getExpr());
                 }
             }
-            return mainValue;
+            if (((Symbol) next).getValue().equals("->")) {
+                next();
+                Expression body = parseExpression(requireComma);
+
+                return new LambdaExpression(mainValue, body);
+            } else {
+                return mainValue;
+            }
         }
 
         LocatedExprList list = (LocatedExprList) current;
@@ -147,7 +168,7 @@ public class Parser {
 //    }
 
     abstract class Expression {
-        public abstract Val compile(Map<String, Val> declarations);
+        public abstract Val compile(Function<String, Val> declarations);
     }
 
     class IdentifierExpression extends Expression {
@@ -163,14 +184,27 @@ public class Parser {
         }
 
         @Override
-        public Val compile(Map<String, Val> declarations) {
+        public Val compile(Function<String, Val> declarations) {
             String name = symbol.getValue();
             if (name.charAt(0) == '\'' && name.charAt(name.length() - 1) == '\'')
                 return Val.symbol(name.substring(1, name.length() - 1));
 
-            Val val = declarations.get(name);
+            Val val = declarations.apply(name);
             if (val == null)
                 throw new EsastException(symbol.getLocation(), "Cannot find symbol: " + symbol.getValue());
+            return val;
+        }
+    }
+
+    class ConstExpression extends Expression {
+        private final Val val;
+
+        ConstExpression(Val val) {
+            this.val = val;
+        }
+
+        @Override
+        public Val compile(Function<String, Val> declarations) {
             return val;
         }
     }
@@ -190,12 +224,72 @@ public class Parser {
         }
 
         @Override
-        public Val compile(Map<String, Val> declarations) {
+        public Val compile(Function<String, Val> declarations) {
             Val ret = function.compile(declarations);
             for (Expression argument : arguments) {
                 ret = ret.call(argument.compile(declarations));
             }
             return ret;
         }
+    }
+
+    class LambdaExpression extends Expression {
+        final IdentifierExpression parameter;
+        final Expression body;
+
+        LambdaExpression(IdentifierExpression parameter, Expression body) {
+            this.parameter = parameter;
+            this.body = body;
+        }
+
+        @Override
+        public Val compile(Function<String, Val> declarations) {
+            return toCompilableExpression(declarations).compile(declarations);
+//            return compileBody(body, declarations);
+
+//            throw new UnsupportedOperationException(expression.toString());
+//            return body.compile(str -> {
+//                if (str.equals(parameter.symbol.getValue()))
+//                    return Val.mirror;
+//
+//                Val value = declarations.apply(str);
+//                if (value == null)
+//                    return null;
+//
+//                return Val.konst.call(value);
+//            });
+        }
+
+        private Expression toCompilableExpression(Function<String, Val> declarations) {
+            return compileBody(body, declarations);
+        }
+
+        private Expression compileBody(Expression expression, Function<String, Val> declarations) {
+            if (expression instanceof IdentifierExpression) {
+                if (((IdentifierExpression) expression).symbol.getValue().equals(parameter.symbol.getValue()))
+                    return new ConstExpression(Val.mirror);
+
+                return new CallExpression(new ConstExpression(Val.konst), new Expression[]{expression});
+            } else if (expression instanceof ConstExpression) {
+                return new ConstExpression(Val.konst.call(expression.compile(declarations)));
+            } else if (expression instanceof CallExpression) {
+                Expression ret = compileBody(((CallExpression) expression).function, declarations);
+                for (Expression argument : ((CallExpression) expression).arguments) {
+                    ret = new CallExpression(
+                            new ConstExpression(Val.substitutor),
+                            new Expression[]{
+                                    ret,
+                                    compileBody(argument, declarations)
+                            }
+                    );
+                }
+                return ret;
+            } else if (expression instanceof LambdaExpression) {
+                LambdaExpression l = (LambdaExpression) expression;
+                return l.toCompilableExpression(declarations);
+            }
+            throw new UnsupportedOperationException(expression + "");
+        }
+
     }
 }

@@ -30,8 +30,12 @@ public class Main {
         System.out.println(initialDeclarations);
     }
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         System.out.println(eq.call(konst).call(konst));
         System.out.println(eq.call(konst).call(substitutor));
+    }
+
+    public static void main(String[] args) throws Exception {
+        main1(args);
     }
 }
