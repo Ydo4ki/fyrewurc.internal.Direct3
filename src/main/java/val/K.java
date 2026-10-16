@@ -42,12 +42,12 @@ final class K implements Value {
 
         @Override
         public boolean isInNormalForm() {
-            return true;
+            return x.isInNormalForm();
         }
 
         @Override
         public Value reduce() {
-            return this;
+            return new Kx(x.reduce());
         }
 
         @Override

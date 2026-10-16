@@ -1,4 +1,7 @@
+import com.ydo4ki.esast.BracketsTypes;
 import com.ydo4ki.esast.EsastException;
+import com.ydo4ki.esast.TokenOutput;
+import com.ydo4ki.esast.TokenType;
 import parser.Parser;
 import val.Val;
 
@@ -17,7 +20,8 @@ public class Main {
 
     public static void main1(String[] args) throws IOException {
         File file = new File("declarations.txt");
-        Parser parser = new Parser(file);
+        TokenOutput toks = new TokenOutput(file, BracketsTypes.bracketsTypes, TokenOutput.Separators.of(",", "->", "."));
+        Parser parser = new Parser(toks);
         Map<String, Val> initialDeclarations = new HashMap<>();
         initialDeclarations.put("K", Val.konst);
         initialDeclarations.put("S", Val.substitutor);
@@ -27,7 +31,8 @@ public class Main {
             EsastException.handleException(System.err, e, String.join("\n", Files.readAllLines(file.toPath())), file);
             e.printStackTrace();
         }
-        System.out.println(initialDeclarations);
+        Val test = initialDeclarations.get("test");
+        System.out.println(test.call(eq));
     }
 
     public static void main2(String[] args) {

@@ -23,8 +23,11 @@ final class LazyValueApplication implements Value {
         Value a = this.a,
               b = this.b;
 
-        if (!a.isInNormalForm())
+        if (!a.isInNormalForm()) {
             a = a.reduce();
+        } else if (!b.isInNormalForm()) {
+            b = b.reduce();
+        }
 
         return this.reduced = a.call(b);
     }

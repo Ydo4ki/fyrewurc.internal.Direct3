@@ -42,12 +42,12 @@ final class S implements Value {
 
         @Override
         public boolean isInNormalForm() {
-            return true;
+            return x.isInNormalForm();
         }
 
         @Override
         public Value reduce() {
-            return this;
+            return new Sx(x.reduce());
         }
 
         @Override
@@ -84,12 +84,12 @@ final class S implements Value {
 
         @Override
         public boolean isInNormalForm() {
-            return true;
+            return x.isInNormalForm() && y.isInNormalForm();
         }
 
         @Override
         public Value reduce() {
-            return this;
+            return new Sxy(x.reduce(), y.reduce());
         }
 
         @Override
