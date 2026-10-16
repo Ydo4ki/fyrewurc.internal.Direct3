@@ -1,9 +1,8 @@
-package parser;
+package org.fw.direct3.parser;
 
 import com.ydo4ki.esast.EsastException;
-import com.ydo4ki.esast.LocatedSymbol;
 import com.ydo4ki.esast.Token;
-import val.Val;
+import org.fw.direct3.val.Val;
 
 import java.util.function.Function;
 

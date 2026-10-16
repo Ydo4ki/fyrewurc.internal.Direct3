@@ -1,4 +1,4 @@
-package val;
+package org.fw.direct3.val;
 
 interface Value {
     Value call(Value value);

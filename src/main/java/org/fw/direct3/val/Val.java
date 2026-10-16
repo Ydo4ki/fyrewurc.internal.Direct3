@@ -1,4 +1,4 @@
-package val;
+package org.fw.direct3.val;
 
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -41,10 +41,11 @@ public final class Val {
         return value.toString();
     }
 
-    public static final Val substitutor = m_wrap(val.S.s);
-    public static final Val konst = m_wrap(val.K.k);
+    public static final Val substitutor = m_wrap(S.s);
+    public static final Val konst = m_wrap(K.k);
     public static final Val mirror = substitutor.call(konst).call(konst).m_fullyReduce();
     public static final Val eq = m_wrap(Equals.eq);
+    public static final Val type = m_wrap(Type.type);
     public static Val symbol(String identifier)
         { return m_wrap(new Sym(identifier)); }
 
@@ -56,7 +57,7 @@ public final class Val {
     private static BiFunction<Val, Val, Val> m_getInitialOptimizedImplementationNative(Value value) {
         if (value instanceof S.Sxy) {
             S.Sxy s = (S.Sxy) value;
-            if (s.x == val.K.k && s.y == val.K.k) {
+            if (s.x == K.k && s.y == K.k) {
                 return (me, arg) -> arg;
             }
         }

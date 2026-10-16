@@ -1,6 +1,0 @@
-
-T = K
-test = S(K, T(K, T))
-F = S(K)
-test = a -> (b -> (c -> a))
-V1 = test(F)

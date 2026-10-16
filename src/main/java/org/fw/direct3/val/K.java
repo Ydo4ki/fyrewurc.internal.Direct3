@@ -1,19 +1,16 @@
-package val;
+package org.fw.direct3.val;
 
 import java.util.Objects;
 
-final class Equals implements Value {
+final class K implements Value {
 
-    static final Equals eq = new Equals();
+    public static final K k = new K();
 
-    static final Value T = K.k;
-    static final Value F = S.s.call(K.k);
-    
-    private Equals() {}
-    
+    private K() {}
+
     @Override
     public Value call(Value x) {
-        return new EqualsX(x);
+        return new Kx(x);
     }
 
     @Override
@@ -28,25 +25,19 @@ final class Equals implements Value {
 
     @Override
     public String toString() {
-        return "eq";
+        return "const";
     }
 
-    static class EqualsX implements Value {
+    static class Kx implements Value {
         private final Value x;
 
-        EqualsX(Value x) {
+        Kx(Value x) {
             this.x = x;
         }
 
         @Override
-        public Value call(Value y) {
-            if (x.equals(y))
-                return T;
-
-            if (x.isInNormalForm() && y.isInNormalForm())
-                return F;
-
-            return new LazyValueApplication(this, y);
+        public Value call(Value value) {
+            return x;
         }
 
         @Override
@@ -56,15 +47,20 @@ final class Equals implements Value {
 
         @Override
         public Value reduce() {
-            return new EqualsX(x.reduce());
+            return new Kx(x.reduce());
+        }
+
+        @Override
+        public String toString() {
+            return "const(" + x + ")";
         }
 
         @Override
         public boolean equals(Object o) {
             if (o == null || getClass() != o.getClass()) return false;
 
-            EqualsX equalsX = (EqualsX) o;
-            return Objects.equals(x, equalsX.x);
+            Kx kx = (Kx) o;
+            return Objects.equals(x, kx.x);
         }
 
         @Override

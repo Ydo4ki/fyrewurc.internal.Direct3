@@ -1,4 +1,4 @@
-package val;
+package org.fw.direct3.val;
 
 import java.util.Objects;
 

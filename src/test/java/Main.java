@@ -1,17 +1,12 @@
-import com.ydo4ki.esast.BracketsTypes;
-import com.ydo4ki.esast.EsastException;
-import com.ydo4ki.esast.TokenOutput;
-import com.ydo4ki.esast.TokenType;
-import parser.Parser;
-import val.Val;
+import org.fw.direct3.Util;
+import org.fw.direct3.val.Val;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
-import static val.Val.*;
+import static org.fw.direct3.val.Val.*;
 
 public class Main {
     public static void main0(String[] args) {
@@ -19,18 +14,11 @@ public class Main {
     }
 
     public static void main1(String[] args) throws IOException {
-        File file = new File("declarations.txt");
-        TokenOutput toks = new TokenOutput(file, BracketsTypes.bracketsTypes, TokenOutput.Separators.of(",", "->", "."));
-        Parser parser = new Parser(toks);
+        File file = new File("fw/declarations.txt");
         Map<String, Val> initialDeclarations = new HashMap<>();
-        initialDeclarations.put("K", Val.konst);
+        initialDeclarations.put("K", konst);
         initialDeclarations.put("S", Val.substitutor);
-        try {
-            parser.parseAll(initialDeclarations);
-        } catch (EsastException e) {
-            EsastException.handleException(System.err, e, String.join("\n", Files.readAllLines(file.toPath())), file);
-            e.printStackTrace();
-        }
+        initialDeclarations = Util.getAll(file, initialDeclarations);
         Val test = initialDeclarations.get("test");
         System.out.println(test.call(eq));
     }
@@ -40,7 +28,16 @@ public class Main {
         System.out.println(eq.call(konst).call(substitutor));
     }
 
+    public static void main3(String[] args) throws IOException {
+        Map<String, Val> declarations = new HashMap<>();
+        declarations.put("K", konst);
+        declarations.put("S", Val.substitutor);
+        declarations.put("type", Val.type);
+        Util.getAllInline(new File("fw/declarations.txt"), declarations);
+        System.out.println(declarations);
+    }
+
     public static void main(String[] args) throws Exception {
-        main1(args);
+        main3(args);
     }
 }

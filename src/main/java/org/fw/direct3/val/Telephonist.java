@@ -1,4 +1,4 @@
-package val;
+package org.fw.direct3.val;
 
 import java.util.Objects;
 
@@ -31,7 +31,7 @@ final class Telephonist implements Value {
     public String toString() {
         if (instance == null)
             return "Telephonist";
-        return "type(" + instance + ")";
+        return Type.type + "(" + instance + ")";
     }
 
     @Override
