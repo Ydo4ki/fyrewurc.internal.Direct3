@@ -4,6 +4,7 @@ import com.ydo4ki.esast.EsastException;
 import com.ydo4ki.esast.Token;
 import org.fw.direct3.val.Val;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 class IdentifierExpression extends Expression {
@@ -33,5 +34,18 @@ class IdentifierExpression extends Expression {
     @Override
     protected Expression simplify() {
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IdentifierExpression that = (IdentifierExpression) o;
+        return Objects.equals(symbol, that.symbol);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(symbol);
     }
 }

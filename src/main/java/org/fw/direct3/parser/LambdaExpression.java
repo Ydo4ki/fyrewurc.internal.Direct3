@@ -2,6 +2,7 @@ package org.fw.direct3.parser;
 
 import org.fw.direct3.val.Val;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 class LambdaExpression extends Expression {
@@ -57,4 +58,18 @@ class LambdaExpression extends Expression {
         throw new UnsupportedOperationException("Unknown Expression implementation: " + expression.getClass());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LambdaExpression that = (LambdaExpression) o;
+        return Objects.equals(parameter, that.parameter) && Objects.equals(body, that.body);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(parameter);
+        result = 31 * result + Objects.hashCode(body);
+        return result;
+    }
 }
