@@ -28,7 +28,7 @@ final class Telephonize implements Value {
 
     @Override
     public String toString() {
-        return "Telephonize";
+        return "telephonize";
     }
 
     static class TelephonizeX implements Value {
