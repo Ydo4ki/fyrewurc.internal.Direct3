@@ -18,6 +18,11 @@ class LambdaExpression extends Expression {
         return toSKI().compile(declarations);
     }
 
+    @Override
+    protected Expression simplify() {
+        return this;
+    }
+
     private Expression toSKI() {
         return abstractOver(parameter, body);
     }
@@ -34,8 +39,8 @@ class LambdaExpression extends Expression {
 
         if (expression instanceof CallExpression) {
             CallExpression call = (CallExpression) expression;
-            Expression a = abstractOver(parameter, call.function);
-            Expression b = abstractOver(parameter, call.argument);
+            Expression a = abstractOver(parameter, call.function).simplify();
+            Expression b = abstractOver(parameter, call.argument).simplify();
 
             Expression function = new ConstExpression(Val.substitutor);
             Expression function1 = new CallExpression(function, a);
@@ -46,7 +51,7 @@ class LambdaExpression extends Expression {
             LambdaExpression lambda = (LambdaExpression) expression;
             Expression inner = lambda.toSKI();
 
-            return abstractOver(parameter, inner);
+            return abstractOver(parameter, inner).simplify();
         }
 
         throw new UnsupportedOperationException("Unknown Expression implementation: " + expression.getClass());

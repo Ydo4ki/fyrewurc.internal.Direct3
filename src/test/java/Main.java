@@ -1,4 +1,4 @@
-import org.fw.direct3.Util;
+import org.fw.direct3.val.Util;
 import org.fw.direct3.val.Val;
 
 import java.io.File;
@@ -14,27 +14,24 @@ public class Main {
     }
 
     public static void main1(String[] args) throws IOException {
-        File file = new File("fw/declarations.txt");
+        File file = new File("fw/bootstrap.dfw");
         Map<String, Val> initialDeclarations = new HashMap<>();
         initialDeclarations.put("K", konst);
         initialDeclarations.put("S", Val.substitutor);
         initialDeclarations = Util.getAll(file, initialDeclarations);
         Val test = initialDeclarations.get("test");
-        System.out.println(test.call(eq));
+        System.out.println(test.call(EQ));
     }
 
     public static void main2(String[] args) {
-        System.out.println(eq.call(konst).call(konst));
-        System.out.println(eq.call(konst).call(substitutor));
+        System.out.println(EQ.call(konst).call(konst));
+        System.out.println(EQ.call(konst).call(substitutor));
     }
 
     public static void main3(String[] args) throws IOException {
-        Map<String, Val> declarations = new HashMap<>();
-        declarations.put("K", konst);
-        declarations.put("S", Val.substitutor);
-        declarations.put("type", Val.type);
-        Util.getAllInline(new File("fw/declarations.txt"), declarations);
-        System.out.println(declarations);
+        for (Map.Entry<String, Val> entry : Util.loadBootStrap().entrySet()) {
+            System.out.println(entry.getKey() + " = " + entry.getValue());
+        }
     }
 
     public static void main(String[] args) throws Exception {

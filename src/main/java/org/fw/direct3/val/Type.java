@@ -1,6 +1,6 @@
 package org.fw.direct3.val;
 
-class Type implements Value {
+final class Type implements Value {
 
     public static final Type type = new Type();
 
@@ -8,10 +8,7 @@ class Type implements Value {
 
     @Override
     public Value call(Value value) {
-        if (value instanceof Telephonist)
-            return new Telephonist((Telephonist) value);
-
-        return Telephonist.telephonist;
+        return value.getType();
     }
 
     @Override
@@ -22,6 +19,11 @@ class Type implements Value {
     @Override
     public Value reduce() {
         return this;
+    }
+
+    @Override
+    public Value getType() {
+        return Telephonist.telephonist;
     }
 
     @Override

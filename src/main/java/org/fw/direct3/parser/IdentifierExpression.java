@@ -29,4 +29,9 @@ class IdentifierExpression extends Expression {
             throw new EsastException(symbol.getLocation(), "Cannot find symbol: " + symbol.getText());
         return val;
     }
+
+    @Override
+    protected Expression simplify() {
+        return this;
+    }
 }

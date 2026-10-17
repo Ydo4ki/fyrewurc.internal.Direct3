@@ -4,7 +4,7 @@ import java.util.Objects;
 
 final class Equals implements Value {
 
-    static final Equals eq = new Equals();
+    static final Equals EQ = new Equals();
 
     static final Value T = K.k;
     static final Value F = S.s.call(K.k);
@@ -27,8 +27,13 @@ final class Equals implements Value {
     }
 
     @Override
+    public Value getType() {
+        return Telephonist.telephonist;
+    }
+
+    @Override
     public String toString() {
-        return "eq";
+        return "EQ";
     }
 
     static class EqualsX implements Value {
@@ -57,6 +62,11 @@ final class Equals implements Value {
         @Override
         public Value reduce() {
             return new EqualsX(x.reduce());
+        }
+
+        @Override
+        public Value getType() {
+            return Telephonist.telephonist;
         }
 
         @Override

@@ -24,8 +24,13 @@ final class S implements Value {
     }
 
     @Override
+    public Value getType() {
+        return Telephonist.telephonist;
+    }
+
+    @Override
     public String toString() {
-        return "substitutor";
+        return "S";
     }
 
     static class Sx implements Value {
@@ -51,6 +56,11 @@ final class S implements Value {
         }
 
         @Override
+        public Value getType() {
+            return Telephonist.telephonist;
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (o == null || getClass() != o.getClass()) return false;
 
@@ -65,7 +75,7 @@ final class S implements Value {
 
         @Override
         public String toString() {
-            return "substitutor(" + x + ")";
+            return "S(" + x + ")";
         }
     }
     
@@ -93,6 +103,11 @@ final class S implements Value {
         }
 
         @Override
+        public Value getType() {
+            return Telephonist.telephonist;
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (o == null || getClass() != o.getClass()) return false;
 
@@ -109,8 +124,8 @@ final class S implements Value {
 
         @Override
         public String toString() {
-            if (x == K.k && y == K.k) return "mirror";
-            return "substitutor(" + x + ", " + y + ")";
+            if (x == K.k && y == K.k) return "I";
+            return "S(" + x + ", " + y + ")";
         }
     }
 }

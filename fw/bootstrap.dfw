@@ -1,0 +1,21 @@
+// defined: K, S, type, EQ, _GenesisInstancer, Call
+
+I = S(K, K)
+
+T = K
+F = S(K)
+
+AND = S(S, K(K(F)))
+OR = S(I, K(T))
+NOT = S(S(I, K(F)), K(T))
+
+PAIR = x -> y -> f -> f(x, y)
+FIRST = p -> p(T)
+SECOND = p -> p(F)
+
+Telephonist = type(Call)
+Instancer = type(_GenesisInstancer)
+i1 = _GenesisInstancer(type)
+
+
+isTypeApiCall = arg -> t -> AND(EQ(type(arg), Call), EQ(type(arg.arg.val), t))

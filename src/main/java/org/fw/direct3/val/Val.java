@@ -44,7 +44,7 @@ public final class Val {
     public static final Val substitutor = m_wrap(S.s);
     public static final Val konst = m_wrap(K.k);
     public static final Val mirror = substitutor.call(konst).call(konst).m_fullyReduce();
-    public static final Val eq = m_wrap(Equals.eq);
+    public static final Val EQ = m_wrap(Equals.EQ);
     public static final Val type = m_wrap(Type.type);
     public static Val symbol(String identifier)
         { return m_wrap(new Sym(identifier)); }
@@ -64,7 +64,7 @@ public final class Val {
         return (me, arg) -> m_wrap(new LazyValueApplication(me.value, arg.value));
     }
 
-    private static Val m_wrap(Value value) {
+    static Val m_wrap(Value value) {
         return new Val(value);
     }
 

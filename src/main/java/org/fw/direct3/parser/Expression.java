@@ -8,4 +8,6 @@ abstract class Expression {
     Expression() {}
 
     public abstract Val compile(Function<String, Val> declarations);
+
+    protected abstract Expression simplify();
 }

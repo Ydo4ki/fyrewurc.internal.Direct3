@@ -24,8 +24,13 @@ final class K implements Value {
     }
 
     @Override
+    public Value getType() {
+        return Telephonist.telephonist;
+    }
+
+    @Override
     public String toString() {
-        return "const";
+        return "K";
     }
 
     static class Kx implements Value {
@@ -51,8 +56,13 @@ final class K implements Value {
         }
 
         @Override
+        public Value getType() {
+            return Telephonist.telephonist;
+        }
+
+        @Override
         public String toString() {
-            return "const(" + x + ")";
+            return "K(" + x + ")";
         }
 
         @Override

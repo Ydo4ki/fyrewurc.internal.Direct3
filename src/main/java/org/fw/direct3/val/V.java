@@ -2,7 +2,7 @@ package org.fw.direct3.val;
 
 final class V {
     static Value IfEquals(Value a, Value b) {
-        return Equals.eq.call(a).call(b);
+        return Equals.EQ.call(a).call(b);
     }
 
     static Value match(Value arg, Value $else, Value... values) {

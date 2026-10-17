@@ -28,6 +28,11 @@ final class Telephonist implements Value {
     }
 
     @Override
+    public Value getType() {
+        return new Telephonist(this);
+    }
+
+    @Override
     public String toString() {
         if (instance == null)
             return "Telephonist";

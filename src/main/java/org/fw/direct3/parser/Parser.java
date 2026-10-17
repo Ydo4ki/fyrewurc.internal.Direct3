@@ -60,12 +60,21 @@ public class Parser {
             return new LambdaExpression(identifier, body);
         }
         Expression result = identifier;
-        while (current.getType() == TokenType.OPEN) {
-            BracketsType bracketsType = toks.getBracketsTypes().byOpen(current.getText().charAt(0));
-            next();
-            List<Expression> args = parseArgs(bracketsType);
-            for (Expression arg : args) {
-                result = new CallExpression(result, arg);
+        while (true) {
+            if (current.getType() == TokenType.OPEN) {
+                BracketsType bracketsType = toks.getBracketsTypes().byOpen(current.getText().charAt(0));
+                next();
+                List<Expression> args = parseArgs(bracketsType);
+                for (Expression arg : args) {
+                    result = new CallExpression(result, arg);
+                }
+            } else if (current.getText().equals(".")) {
+                next();
+                ConstExpression sym = new ConstExpression(Val.symbol(current.getText()));
+                result = new CallExpression(result, sym);
+                next();
+            } else {
+                break;
             }
         }
         return result;

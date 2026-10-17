@@ -33,6 +33,11 @@ final class LazyValueApplication implements Value {
     }
 
     @Override
+    public Value getType() {
+        return new LazyValueApplication(Type.type, this);
+    }
+
+    @Override
     public boolean isInNormalForm() {
         return this.reduce().equals(this);
     }

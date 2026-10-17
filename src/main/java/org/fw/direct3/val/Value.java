@@ -10,5 +10,7 @@ interface Value {
      * @return reduced value
      */
     Value reduce();
+
+    Value getType();
 }
 
