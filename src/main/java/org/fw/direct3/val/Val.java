@@ -46,6 +46,7 @@ public final class Val {
     public static final Val mirror = substitutor.call(konst).call(konst).m_fullyReduce();
     public static final Val EQ = m_wrap(Equals.EQ);
     public static final Val type = m_wrap(Type.type);
+    public static final Val telephonize = m_wrap(Telephonize.telephonize);
     public static Val symbol(String identifier)
         { return m_wrap(new Sym(identifier)); }
 

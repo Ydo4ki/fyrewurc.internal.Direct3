@@ -36,6 +36,7 @@ final class Telephonist implements Value {
     public String toString() {
         if (instance == null)
             return "Telephonist";
+
         return Type.type + "(" + instance + ")";
     }
 

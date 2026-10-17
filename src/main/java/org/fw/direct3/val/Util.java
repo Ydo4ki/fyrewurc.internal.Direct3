@@ -39,8 +39,11 @@ public final class Util {
         declarations.put("type", Val.type);
         declarations.put("EQ", Val.EQ);
         declarations.put("Call", Val.m_wrap(BoxValue.Call.type));
+        declarations.put("telephonize", Val.telephonize);
+
         declarations.put("_GenesisInstancer", Val.m_wrap(new BoxValue(BoxValue.Instancer.type, BoxValue.Instancer.type)));
         declarations.put("_AllUnpacker", Val.m_wrap(BoxValue.AllUnpacker.unpacker));
+
         Util.getAllInline(new File("fw/bootstrap.dfw"), declarations);
         return declarations;
     }

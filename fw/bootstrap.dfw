@@ -1,4 +1,4 @@
-// defined: K, S, type, EQ, _GenesisInstancer, Call
+// defined: K, S, type, EQ, Call, telephonize, _GenesisInstancer, _AllUnpacker
 
 I = S(K, K)
 
@@ -17,5 +17,7 @@ Telephonist = type(Call)
 Instancer = type(_GenesisInstancer)
 i1 = _GenesisInstancer(type)
 
+mt = telephonize(I)
+mtx = mt(K)
 
 isTypeApiCall = arg -> t -> AND(EQ(type(arg), Call), EQ(type(arg.arg.val), t))
