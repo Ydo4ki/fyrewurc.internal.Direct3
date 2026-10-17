@@ -1,0 +1,3 @@
+BxB = ProductType.cons(Bool, Bool)('first-type')
+BxB2 = ProductType.cons(Bool, Bool)('second-type')
+BxB3 = Bool

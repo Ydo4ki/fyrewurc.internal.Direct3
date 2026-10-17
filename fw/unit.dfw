@@ -1,0 +1,7 @@
+UnitCH = c -> EQ(c.arg, 'cons')
+    (c.instance(Telephonist))
+    (c.val(c.arg))
+
+Unit = telephonize(UnitCH)
+
+unit = Unit.cons

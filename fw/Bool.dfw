@@ -1,0 +1,11 @@
+BoolCH = c -> EQ(c.arg, 'true')
+    (c.instance(T))
+    (EQ(c.arg, 'false')
+        (c.instance(F))
+        (AND(EQ(type(c.arg), Call), EQ(type(c.arg.val), c.val))
+            (c.unpack(c.arg.val) (c.arg.arg))
+            (c.val(c.arg))
+        )
+    )
+
+Bool = telephonize(BoolCH)

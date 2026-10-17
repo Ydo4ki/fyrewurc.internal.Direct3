@@ -49,7 +49,7 @@ final class LazyValueApplication implements Value {
 
     @Override
     public String toString() {
-        return a + "(" + b + ")";
+        return "Unknown(" + a + "," + b + ")";
     }
 
     @Override

@@ -1,9 +1,13 @@
 package org.fw.direct3.val;
 
 import java.util.Objects;
+import java.util.WeakHashMap;
 import java.util.function.BiFunction;
 
 public final class Val {
+
+    static final WeakHashMap<Value, Val> map = new WeakHashMap<>();
+
     private Value value;
     @SuppressWarnings("FieldMayBeFinal")
     private BiFunction<Val, Val, Val> optimizedImplementationNative;
@@ -46,6 +50,7 @@ public final class Val {
     public static final Val mirror = substitutor.call(konst).call(konst).m_fullyReduce();
     public static final Val EQ = m_wrap(Equals.EQ);
     public static final Val type = m_wrap(Type.type);
+    public static final Val telephonist = m_wrap(Telephonist.telephonist);
     public static final Val telephonize = m_wrap(Telephonize.telephonize);
     public static Val symbol(String identifier)
         { return m_wrap(new Sym(identifier)); }
@@ -66,7 +71,7 @@ public final class Val {
     }
 
     static Val m_wrap(Value value) {
-        return new Val(value);
+        return map.computeIfAbsent(value, Val::new);
     }
 
     private Val m_fullyReduce() {

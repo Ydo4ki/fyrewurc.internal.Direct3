@@ -32,6 +32,10 @@ public final class Util {
         return initialDeclarations;
     }
 
+    private static void getOne(Map<String, Val> declarations, String name) throws IOException {
+        declarations.put(name, Util.getAll(new File("fw/" + name + ".dfw"), declarations).get(name));
+    }
+
     public static Map<String, Val> loadBootStrap() throws IOException {
         Map<String, Val> declarations = new HashMap<>();
         declarations.put("K", konst);
@@ -40,11 +44,21 @@ public final class Util {
         declarations.put("EQ", Val.EQ);
         declarations.put("Call", Val.m_wrap(BoxValue.Call.type));
         declarations.put("telephonize", Val.telephonize);
+        declarations.put("\\bot", Val.m_wrap(UNDECIDABILITY.generator));
 
         declarations.put("_GenesisInstancer", Val.m_wrap(new BoxValue(BoxValue.Instancer.type, BoxValue.Instancer.type)));
         declarations.put("_AllUnpacker", Val.m_wrap(BoxValue.AllUnpacker.unpacker));
 
         Util.getAllInline(new File("fw/bootstrap.dfw"), declarations);
+
+        declarations.remove("_AllUnpacker");
+        declarations.remove("_GenesisInstancer");
+
+        getOne(declarations, "unit");
+        getOne(declarations, "Bool");
+        getOne(declarations, "eq");
+        getOne(declarations, "ProductType");
+
         return declarations;
     }
 }

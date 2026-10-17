@@ -29,7 +29,9 @@ public class Main {
     }
 
     public static void main3(String[] args) throws IOException {
-        for (Map.Entry<String, Val> entry : Util.loadBootStrap().entrySet()) {
+        Map<String, Val> decls = Util.loadBootStrap();
+        Util.getAllInline(new File("fw/test.dfw"), decls);
+        for (Map.Entry<String, Val> entry : decls.entrySet()) {
             System.out.println(entry.getKey() + " = " + entry.getValue());
         }
     }

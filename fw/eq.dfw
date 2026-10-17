@@ -1,0 +1,1 @@
+eq = x -> y -> EQ(x, y)(Bool.true, Bool.false)

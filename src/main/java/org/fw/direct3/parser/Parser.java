@@ -3,10 +3,7 @@ package org.fw.direct3.parser;
 import com.ydo4ki.esast.*;
 import org.fw.direct3.val.Val;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Parser {
     private final TokenOutput toks;
@@ -37,7 +34,7 @@ public class Parser {
 
             next();
             Expression expr = parseExpression();
-            initialDeclarations.put(name, expr.compile(initialDeclarations::get));
+            initialDeclarations.put(name, Objects.requireNonNull(expr.compile(initialDeclarations::get)));
             tok = current;
         }
     }

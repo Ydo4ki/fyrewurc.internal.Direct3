@@ -1,0 +1,38 @@
+PAIR = x -> y -> f -> f(x, y)
+FIRST = p -> p(T)
+SECOND = p -> p(F)
+
+ConsOr = d -> EQ(d.arg, 'cons')(a -> b -> d.instance(PAIR(a, b)))
+
+productTypeInstanceCons = d -> EQ(type(d), (FIRST(d.unpack(d.arg.val))))
+    (b -> EQ(type(b), (SECOND(d.unpack(d.arg.val))))(d.arg.instance(PAIR(d, b)))(\bot(d.val(d.arg))))
+    (\bot(d.val(d.arg)))
+
+InstConsOr = d -> EQ(d.arg.arg, 'cons')(productTypeInstanceCons(d))
+
+FstT = d -> EQ(d.arg.arg, 'first-type')
+    (FIRST(d.unpack(d.arg.val)))
+
+FstS = d -> EQ(d.arg.arg, 'second-type')
+    (SECOND(d.unpack(d.arg.val)))
+
+HandleInstInstCall = d -> isTypeApiCall(d.arg, d.val)
+    (EQ(d.arg.arg, 'first')
+    	(FIRST(d.unpack(d.arg.val)))
+    	(EQ(d.arg.arg, 'second')
+    		(SECOND(d.unpack(d.arg.val)))
+    		(\bot(d.val(d.arg)))
+        )
+    )
+
+HandleInstCall = d -> isTypeApiCall(d.arg, d.val)
+    (InstConsOr(d)
+    (FstT(d)
+    (FstS(d)
+    (HandleInstInstCall(d.arg)
+    (\bot(d.val(d.arg)))))))
+
+
+ProductTypeCH = d -> ConsOr(d)(HandleInstCall(d)(\bot(d.val(d.arg))))
+
+ProductType = telephonize(ProductTypeCH) // it doesnt work :<

@@ -12,5 +12,9 @@ interface Value {
     Value reduce();
 
     Value getType();
+
+    default Value markUndecidable() {
+        return new UNDECIDABILITY(this);
+    }
 }
 

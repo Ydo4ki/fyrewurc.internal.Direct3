@@ -48,8 +48,9 @@ final class Equals implements Value {
             if (x.equals(y))
                 return T;
 
-            if (x.isInNormalForm() && y.isInNormalForm())
-                return F;
+            if (!(x instanceof UNDECIDABILITY) && !(y instanceof UNDECIDABILITY))
+                if (x.isInNormalForm() && y.isInNormalForm())
+                    return F;
 
             return new LazyValueApplication(this, y);
         }

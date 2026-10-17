@@ -9,34 +9,7 @@ AND = S(S, K(K(F)))
 OR = S(I, K(T))
 NOT = S(S(I, K(F)), K(T))
 
-PAIR = x -> y -> f -> f(x, y)
-FIRST = p -> p(T)
-SECOND = p -> p(F)
-
 Telephonist = type(Call)
 Instancer = type(_GenesisInstancer)
 
-
 isTypeApiCall = arg -> t -> AND(EQ(type(arg), Call), EQ(type(arg.val), t))
-
-UnitCH = c -> EQ(c.arg,'cons')
-    (c.instance(Telephonist))
-    (c.val(c.arg))
-
-Unit = telephonize(UnitCH)
-
-unit = Unit.cons
-
-BoolCH = c -> EQ(c.arg, 'true')
-    (c.instance(T))
-    (EQ(c.arg, 'false')
-        (c.instance(F))
-        (AND(EQ(type(c.arg), Call), EQ(type(c.arg.val), c.val))
-            (c.unpack(c.arg.val)(c.arg.arg))
-            (c.val(c.arg))
-        )
-    )
-
-Bool = telephonize(BoolCH)
-true = Bool.true
-false = Bool.false
