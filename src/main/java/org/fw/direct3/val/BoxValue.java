@@ -89,8 +89,8 @@ final class BoxValue implements Value {
             return V.match(arg, new LazyValueApplication(this, this.arg),
                     new Sym("val"), this.val,
                     new Sym("arg"), this.arg,
-                    new Sym("instance"), new BoxValue(Instancer.type, val)
-//                    new Sym("unpack"), null
+                    new Sym("instance"), new BoxValue(Instancer.type, val),
+                    new Sym("unpack"), BoxValue.AllUnpacker.unpacker // todo: safe unpacker
             );
         }
 

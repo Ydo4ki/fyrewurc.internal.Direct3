@@ -1,5 +1,7 @@
 package org.fw.direct3.val;
 
+import java.util.Objects;
+
 final class Telephonize implements Value {
     static final Telephonize telephonize = new Telephonize();
 
@@ -61,6 +63,19 @@ final class Telephonize implements Value {
         @Override
         public String toString() {
             return telephonize + "(" + x + ")";
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TelephonizeX that = (TelephonizeX) o;
+            return Objects.equals(x, that.x);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(x);
         }
     }
 }

@@ -17,7 +17,7 @@ Telephonist = type(Call)
 Instancer = type(_GenesisInstancer)
 
 
-isTypeApiCall = arg -> t -> AND(EQ(type(arg), Call), EQ(type(arg.arg.val), t))
+isTypeApiCall = arg -> t -> AND(EQ(type(arg), Call), EQ(type(arg.val), t))
 
 UnitCH = c -> EQ(c.arg,'cons')
     (c.instance(Telephonist))
@@ -27,7 +27,16 @@ Unit = telephonize(UnitCH)
 
 unit = Unit.cons
 
-mt = telephonize(I)
-mtx = mt(K)
+BoolCH = c -> EQ(c.arg, 'true')
+    (c.instance(T))
+    (EQ(c.arg, 'false')
+        (c.instance(F))
+        (AND(EQ(type(c.arg), Call), EQ(type(c.arg.val), c.val))
+            (c.unpack(c.arg.val)(c.arg.arg))
+            (c.val(c.arg))
+        )
+    )
 
-i1 = _GenesisInstancer(type)
+Bool = telephonize(BoolCH)
+true = Bool.true
+false = Bool.false
